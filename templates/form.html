@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block title %}Enter Your Details{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-center mb-4">Enter Your Resume Details</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form action="{{ url_for('generate_resume') }}" method="POST" class="resume-form">
+                <input type="hidden" name="template_id" value="{{ template.id }}">
+                <!-- Personal Information -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3 class="mb-0">Personal Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="fullName" name="fullName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fatherName" class="form-label">Father's Name</label>
+                            <input type="text" class="form-control" id="fatherName" name="fatherName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" name="location" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Professional Summary -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3 class="mb-0">Professional Summary</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="summary" class="form-label">Summary</label>
+                            <textarea class="form-control" id="summary" name="summary" rows="4" required></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Work Experience -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0">Work Experience</h3>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="addExperience()">Add Experience</button>
+                    </div>
+                    <div class="card-body" id="experienceContainer">
+                        <div class="experience-item mb-3">
+                            <div class="mb-3">
+                                <label class="form-label">Position</label>
+                                <input type="text" class="form-control" name="position[]" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Company</label>
+                                <input type="text" class="form-control" name="company[]" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Duration</label>
+                                <input type="text" class="form-control" name="duration[]" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Responsibilities</label>
+                                <textarea class="form-control" name="responsibilities[]" rows="3" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Education -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0">Education</h3>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="addEducation()">Add Education</button>
+                    </div>
+                    <div class="card-body" id="educationContainer">
+                        <div class="education-item mb-3">
+                            <div class="mb-3">
+                                <label class="form-label">Degree</label>
+                                <input type="text" class="form-control" name="degree[]" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Institution</label>
+                                <input type="text" class="form-control" name="institution[]" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Year</label>
+                                <input type="text" class="form-control" name="year[]" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">GPA (Optional)</label>
+                                <input type="text" class="form-control" name="gpa[]">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3 class="mb-0">Skills</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="skills" class="form-label">Skills (comma-separated)</label>
+                            <textarea class="form-control" id="skills" name="skills" rows="3" required></textarea>
+                            <div class="form-text">Enter your skills separated by commas (e.g., Python, JavaScript, Project Management)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mb-5">
+                    <button type="submit" class="btn btn-primary btn-lg">Generate Resume</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.resume-form .card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.resume-form .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 1rem;
+}
+
+.resume-form .card-header h3 {
+    color: #2c3e50;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.resume-form .card-body {
+    padding: 1.5rem;
+}
+
+.resume-form .form-label {
+    font-weight: 500;
+    color: #495057;
+}
+
+.resume-form .form-control {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+}
+
+.resume-form .form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+}
+
+.resume-form .btn-primary {
+    padding: 0.5rem 2rem;
+    font-weight: 500;
+}
+
+.experience-item, .education-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #f8f9fa;
+}
+</style>
+
+<script>
+function addExperience() {
+    const container = document.getElementById('experienceContainer');
+    const template = `
+        <div class="experience-item mb-3">
+            <div class="mb-3">
+                <label class="form-label">Position</label>
+                <input type="text" class="form-control" name="position[]" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Company</label>
+                <input type="text" class="form-control" name="company[]" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Duration</label>
+                <input type="text" class="form-control" name="duration[]" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Responsibilities</label>
+                <textarea class="form-control" name="responsibilities[]" rows="3" required></textarea>
+            </div>
+            <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">Remove</button>
+        </div>
+    `;
+    container.insertAdjacentHTML('beforeend', template);
+}
+
+function addEducation() {
+    const container = document.getElementById('educationContainer');
+    const template = `
+        <div class="education-item mb-3">
+            <div class="mb-3">
+                <label class="form-label">Degree</label>
+                <input type="text" class="form-control" name="degree[]" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Institution</label>
+                <input type="text" class="form-control" name="institution[]" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Year</label>
+                <input type="text" class="form-control" name="year[]" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">GPA (Optional)</label>
+                <input type="text" class="form-control" name="gpa[]">
+            </div>
+            <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">Remove</button>
+        </div>
+    `;
+    container.insertAdjacentHTML('beforeend', template);
+}
+</script>
+{% endblock %}

@@ -1,0 +1,10 @@
+Flask==2.0.1
+selenium==4.1.0
+webdriver_manager==3.5.2
+pdfkit==1.0.0
+Werkzeug==2.0.1
+jinja2==3.0.1
+MarkupSafe==2.0.1
+itsdangerous==2.0.1
+click==8.0.1
+gunicorn==20.1.0

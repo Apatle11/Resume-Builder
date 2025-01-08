@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}{{ data.fullName }} - Resume{% endblock %}
+
+{% block extra_css %}
+<style>
+    @media print {
+        .no-print {
+            display: none !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="text-end mb-3 no-print">
+        <button onclick="printResume()" class="btn btn-primary me-2">Print Resume</button>
+        <button onclick="downloadPDF()" class="btn btn-success">Download PDF</button>
+    </div>
+
+    <div id="resume" class="resume modern-minimal">
+        <div class="header">
+            <h1>{{ data.fullName }}</h1>
+            <p>
+                {{ data.email }} | {{ data.phone }}<br>
+                {{ data.location }}
+            </p>
+        </div>
+
+        <div class="summary">
+            <h2 class="section-title">Professional Summary</h2>
+            <p>{{ data.summary }}</p>
+        </div>
+
+        <div class="experience">
+            <h2 class="section-title">Work Experience</h2>
+            {% for exp in data.experience %}
+            <div class="experience-item mb-4">
+                <h3>{{ exp.position }} at {{ exp.company }}</h3>
+                <p class="duration">{{ exp.duration }}</p>
+                <p>{{ exp.responsibilities }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="education">
+            <h2 class="section-title">Education</h2>
+            {% for edu in data.education %}
+            <div class="education-item mb-3">
+                <h3>{{ edu.degree }}</h3>
+                <p>{{ edu.institution }} - {{ edu.year }}</p>
+                {% if edu.gpa %}
+                <p>GPA: {{ edu.gpa }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="skills">
+            <h2 class="section-title">Skills</h2>
+            <p>{{ data.skills }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+{% endblock %}

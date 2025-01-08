@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ resume.fullName }} - Resume</title>
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background: #fff;
+        }
+
+        /* Container */
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 40px;
+            }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #2196F3;
+            padding-bottom: 20px;
+        }
+
+        .name {
+            font-size: 2.8em;
+            color: #1976D2;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .name {
+                font-size: 2em;
+            }
+        }
+
+        /* Contact Info */
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+            color: #616161;
+            font-size: 1.1em;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            white-space: nowrap;
+        }
+
+        .contact-item i {
+            color: #3498db;
+            width: 16px;
+            text-align: center;
+        }
+
+        @media (max-width: 576px) {
+            .contact-info {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: #1976D2;
+            border-bottom: 2px solid #2196F3;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Summary */
+        .summary {
+            font-size: 1.1em;
+            color: #424242;
+            line-height: 1.8;
+            text-align: justify;
+            margin-bottom: 30px;
+        }
+
+        /* Experience & Education */
+        .experience-item, .education-item {
+            margin-bottom: 25px;
+        }
+
+        .position-title, .degree-name {
+            font-weight: 700;
+            color: #1976D2;
+            font-size: 1.1em;
+            margin: 5px 0;
+        }
+
+        .company-name, .institution-name {
+            font-weight: 500;
+            color: #424242;
+            font-size: 1.2em;
+        }
+
+        .duration {
+            color: #757575;
+            font-style: italic;
+            margin: 5px 0;
+        }
+
+        /* Skills */
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill {
+            background: #E3F2FD;
+            color: #1976D2;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                padding: 0;
+                background: white;
+            }
+            
+            .container {
+                box-shadow: none;
+                padding: 20px;
+            }
+            
+            .header {
+                border-bottom-color: #000;
+            }
+            
+            .section-title {
+                border-bottom-color: #000;
+                color: #000;
+            }
+            
+            .position-title, .degree-name {
+                color: #000;
+            }
+            
+            .skill {
+                border: 1px solid #000;
+                background: none;
+                color: #000;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="name">{{ resume.fullName }}</h1>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-user"></i>
+                    <span>Father's Name: {{ resume.fatherName }}</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-calendar"></i>
+                    <span>DOB: {{ resume.dateOfBirth }}</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>{{ resume.email }}</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>{{ resume.phone }}</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>{{ resume.location }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Professional Summary</h2>
+            <p class="summary">{{ resume.summary }}</p>
+        </div>
+
+        {% if resume.experiences %}
+        <div class="section">
+            <h2 class="section-title">Work Experience</h2>
+            {% for exp in resume.experiences %}
+            <div class="experience-item">
+                <div class="position-title">{{ exp.position }}</div>
+                <div class="company-name">{{ exp.company }}</div>
+                <div class="duration">{{ exp.duration }}</div>
+                <p>{{ exp.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if resume.education %}
+        <div class="section">
+            <h2 class="section-title">Education</h2>
+            {% for edu in resume.education %}
+            <div class="education-item">
+                <div class="degree-name">{{ edu.degree }}</div>
+                <div class="institution-name">{{ edu.institution }}</div>
+                <div class="duration">{{ edu.year }}</div>
+                {% if edu.gpa %}
+                <div>GPA: {{ edu.gpa }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if resume.skills %}
+        <div class="section">
+            <h2 class="section-title">Skills</h2>
+            <div class="skills">
+                {% for skill in resume.skills %}
+                <span class="skill">{{ skill.strip() }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
